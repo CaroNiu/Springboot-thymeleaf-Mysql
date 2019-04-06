@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="~{fragments/header :: header}">
+</head>
+<body>
+<!-- Page Content 查看博客详情（发布内容）-->
+<div class="container blog-content-container">
+   <div class="row">
+    <!-- 用户发表的博客详细信息 -->
+      <div class="col-lg-8 col-md-8 mx-auto">
+      	<div sec:authorize="isAuthenticated()">
+      		<div class="card-block" th:object="${blogModel.blog}">
+		       	<input type="hidden" name="id" th:value="*{id}" id="blogId">
+		        <input  type="text" class="form-control" id="title" name="title"  th:value="*{title}" readonly="readonly">
+		      	<hr>
+		        <textarea class="blog-textarea" cols="67" id="summary" name="summary"  th:text="*{summary}"  readonly="readonly"></textarea>
+		      	<hr>
+		       <textarea id="md" cols="100" rows="15" data-provide="markdown" data-hidden-buttons="cmdImage" name="content"  th:text="*{content}"  readonly="readonly"></textarea>
+	     	</div>
+      	</div>
+      	
+      	<!-- 未登录 -->
+      	<div class="alert alert-warning" sec:authorize="isAnonymous()">
+				<a href="#" class="close" data-dismiss="alert">
+				&times;
+				</a>
+			<strong>警告！</strong>您当前未登录，请登录后查看博客信息。<a href="/login">前往登录</a>
+	   </div>
+	   
+      </div>
+       <!-- 右侧栏目 -->
+      <div class="col-lg-4 col-md-4 mx-auto" th:if="${blogModel.user.username} eq ${#authentication.name}" th:object="${blogModel.blog}">
+			<!-- 更新设置 -->
+			<a class="" href="/u/nuri" th:href="@{'/b/updateBlogdetail/'+ *{id}} " style="font-style: oblique;">Update</a>
+			<hr>
+			<!-- 删除博客 -->
+			<a class="" href="/u/nuri" th:href="@{'/b/deleteblog/'+ *{id}} " style="font-style: oblique;">Delete</a>
+        <hr>
+      </div>
+     </div>
+     
+   </div>
+     
+      
+<!-- /.container -->
+<hr>
+<div th:replace="~{fragments/footer :: footer}">...</div>
+<!-- customer JS -->
+
+</body>
+</html>

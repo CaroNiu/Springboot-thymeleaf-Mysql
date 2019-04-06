@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}">
+<style type="text/css">
+	body{background: url(img/4.jpg) no-repeat;background-size: cover;font-size: 16px;}
+	.form{background: rgba(255,255,255,0.2);width:400px;margin:1000px;}
+	#login_form{display: block;}
+	#register_form{display: none;}
+	.fa{display: inline-block;top: 27px;left: 6px;position: relative;color: #ccc;}
+	input[type="text"],input[type="password"]{padding-left:26px;}
+	.checkbox{padding-left:21px;}
+</style>
+</head>
+    <body>
+
+    <div class="container blog-content-container">
+		
+		<div class="row" style="margin-left: 100px;">
+				<h2 style="margin-left: 24px;">Update your blog</h2>	
+				<!-- Blog Post -->
+	            <div class="mb-8">
+	                <div class="card-block" th:object="${blogModel.blog}">
+	                	<input type="hidden" name="id" th:value="*{id}" id="blogId">
+	                    <input  type="text" class="form-control" id="title" name="title"  th:value="*{title}"  maxlength="50"><span id="titleError" style="color: red;display: none;">please input title</span>
+						<hr>
+	                    <textarea class="blog-textarea" cols="95" id="summary" name="summary"  th:text="*{summary}" maxlength="300"></textarea><span id="summaryError" style="color: red;display: none;">please input summary</span>
+	                   	<hr>
+	                    <textarea id="md" cols="100" rows="15" data-provide="markdown" data-hidden-buttons="cmdImage" name="content"  th:text="*{content}"></textarea><span id="contentError" style="color: red;display: none;">please input content</span>
+	                </div>
+	            </div>
+				 <div class="row mt-1">
+		            <div  class="col-lg-12">
+						<button id="submitBlog" style="color: white;background:gray;padding: 0.25cm;border-radius: 20px;margin-left: 400px;" th:attr="userName=${#authentication.name}">Release</button>
+		            </div>
+		         </div>
+		</div>
+		
+    </div> <!-- /container -->
+	<div th:replace="~{fragments/footer :: footer}">...</div>
+	
+	<!--customer js-->
+	<script src="../../js/userspace/blogedit.js" th:src="@{/js/userspace/blogedit.js}"></script>
+    </body>
+</html>

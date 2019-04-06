@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="~{fragments/header :: header}">
+</head>
+<body>
+<!-- Page Content -->
+<div class="container blog-content-container">
+   <div class="row">
+    <!-- 用户发表的博客 -->
+      <div class="col-lg-8 col-md-8 mx-auto">
+        <div class="post-preview" id="mainContainer">
+          <div id="mainContainerRepleace">
+          <!-- 查询的客户发布博客列表 -->
+       		<h1 style="color: gray;">Blogs</h1>
+       		 <div class="card mb-4" th:each="blog : ${blogList}">
+       		   <div class="card-block">
+		      	 <!-- 客户博客,点击查看详情-->
+		         <a href="/b/blogdetail" th:href="@{'/b/blogdetail/'+ ${blog.id}} " >
+		           <h2 class="post-title" th:text="${blog.title}">
+		           	 <!-- 标题 -->
+		             <!-- Man must explore, and this is exploration at its greatest -->
+		           </h2>
+		           <h3 class="post-subtitle" th:text="${blog.summary}">
+		             <!-- 简介 -->
+		             <!-- Problems look mighty small from 150 miles up -->
+		           </h3>
+		         </a>
+         		 <p class="post-meta" th:object="${blog.user}">Posted by
+         		 	<a href="#" th:text="*{username}"></a>
+         		 	[[${#dates.format(blog.createTime, 'yyyy-MM-dd HH:mm')}]]</p>
+          	</div>
+          </div>
+          <div th:replace="~{fragments/page :: page}">...</div>
+       </div>
+    </div>
+  </div>
+      <!-- 右侧栏目 -->
+      <div class="col-lg-4 col-md-4 mx-auto" sec:authorize="isAuthenticated()" th:object="${user}">
+		<div th:if="*{username} eq ${#authentication.name}">	
+		<!-- 个人设置 -->
+			<a class="" href="/u/nuri" th:href="@{'/u/' + ${#authentication.name}}" style="font-style: oblique;">Personal settings</a>
+			<hr>
+			<!-- 写博客 -->
+			<a class="" href="/u/nuri" th:href="@{/u/blogs/edit}" style="font-style: oblique;">Write a blog</a>
+		</div>	
+        <hr>
+      </div>
+      
+    </div>
+  </div>
+<!-- /.container -->
+<hr>
+<div th:replace="~{fragments/footer :: footer}">...</div>
+<!-- customer JS -->
+<script th:inline="javascript">
+var username = [[${user.username}]];
+</script>
+<script src="../../js/userspace/u.js" th:src="@{/js/userspace/u.js}"></script>
+</body>
+</html>

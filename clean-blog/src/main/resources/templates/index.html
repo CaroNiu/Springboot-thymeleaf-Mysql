@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head th:replace="~{fragments/header :: header}">
+</head>
+<body>
+<!-- Page Content -->
+<div class="container blog-content-container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto" th:each="blog : ${allBlogsModel.allBlogs}">
+        <div class="post-preview">
+          <a href="/b/blogdetail" th:href="@{'/b/blogdetail/'+ ${blog.id}}"  >
+            <h2 class="post-title" th:text="${blog.title}">
+             <!--  Man must explore, and this is exploration at its greatest -->
+            </h2>
+            <h3 class="post-subtitle" th:text="${blog.summary}">
+              <!-- Problems look mighty small from 150 miles up -->
+            </h3>
+          </a>
+          <p class="post-meta" th:object="${blog.user}">Posted by
+           	<a href="/u/userinfo" th:href="@{'/u/userinfo/'+ *{username}}" th:text="*{username}" ></a>
+            [[${#dates.format(blog.createTime, 'yyyy-MM-dd HH:mm')}]]</p>
+        </div>
+        <hr>
+      </div>
+    </div>
+  </div>
+<!-- /.container -->
+<hr>
+<div th:replace="~{fragments/footer :: footer}">...</div>
+</body>
+</html>
