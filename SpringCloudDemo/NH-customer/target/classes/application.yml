@@ -1,0 +1,9 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9001/eureka/
+server:
+  port: 9004
+spring:
+  application:
+    name: NH-customer-ribbon

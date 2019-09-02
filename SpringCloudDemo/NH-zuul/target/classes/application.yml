@@ -1,0 +1,17 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9001/eureka/
+server:
+  port: 9006
+spring:
+  application:
+    name: NH-zuul
+zuul:
+  routes:
+    api-a:
+      path: /api-a/**
+      service-id: NH-CUSTOMER-RIBBON
+    api-b:
+      path: /api-b/**
+      service-id: NH-FEIGN

@@ -1,0 +1,13 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9001/eureka/
+server:
+  port: 9005
+spring:
+  application:
+    name: NH-feign
+#某些版本需要手动开启Feign断路器，feign自带断路器
+feign:
+  hystric:
+    enabled: true

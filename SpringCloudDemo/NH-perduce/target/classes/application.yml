@@ -1,0 +1,12 @@
+#注册中心
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:9001/eureka/
+#对外接口      
+server:
+  port: 9002
+#注册中心服务名
+spring:
+  application:
+    name: NH-produce
