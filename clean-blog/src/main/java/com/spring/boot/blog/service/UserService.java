@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.spring.boot.blog.vo.EmailSendUserEvent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,7 +27,10 @@ public class UserService implements IUserService,UserDetailsService {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+
+	@Autowired
+	private ApplicationContext applicationContext;
+
 	/**
 	 * 根据用户名查询用户
 	 * @param username
@@ -37,11 +42,14 @@ public class UserService implements IUserService,UserDetailsService {
 	
 	/**
 	 * 存储注册用户信息
+	 * 使用发布订阅模式，使用Spring自带发布订阅模式，使用异步处理，单一迷失，发送邮件失败不影响主要任务的执行
 	 * @param user
 	 */
 	@Transactional
 	@Override
 	public User saveUser(User user) {
+		// modify 新增客户注册，发送邮件提醒
+		this.applicationContext.publishEvent(new EmailSendUserEvent(user));
 		return userRepository.save(user);
 	}
 	
