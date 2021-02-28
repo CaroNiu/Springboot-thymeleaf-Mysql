@@ -4,11 +4,7 @@ $(function() {
 	$('#userCenter').on('click', function(){
 		$("#navbarResponsive").hide();
 		$("#user_navbarResponsive").show();
-		alert("1111");
 	});
-	
-	
-	
 	// 注册页面提交
 	$('#register_submit').on('click', function(){  
 		// 获取各个输入框的值
@@ -37,30 +33,41 @@ $(function() {
 			$("#passwordAlert").html(msg);
 		}
 		if(name != "" && email != "" && username != "" && password != ""){
-			// 获取 CSRF Token
-			var csrfToken = $("meta[name='_csrf']").attr("content");
-			var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-			$.ajax({ 
-				 url: '/register', 
-				 type: 'POST', 
-				 data:{
-					 "name" : name,
-					 "email" : email,
-					 "username" : username,
-					 "password" : password
-				 },
-				 beforeSend: function(request) {
-		             request.setRequestHeader(csrfHeader, csrfToken); // 添加 CSRF
-																		// Token
-		         },
-				 success: function(data){
-					 if(data != null && data.id != null){
-						 window.location.href = "login.html";
-					 }else{
-						 $("#errorMsg").html(" register has failed ");
-					 }
-				 }
-			 });
+			// 校验邮箱地址是否正确
+			var email=email.replace(/^\s+|\s+$/g,"").toLowerCase();//去除前后空格并转小写
+			var reg=/^[a-z0-9](\w|\.|-)*@([a-z0-9]+-?[a-z0-9]+\.){1,3}[a-z]{2,4}$/i;
+			if (email.match(reg)==null) {
+				var msg = " Please enter the email address with correct format\n" +
+					"\n !";
+				$("#email").focus();
+				$("#emailAlert").html(msg);
+			}else{
+				// 获取 CSRF Token
+				var csrfToken = $("meta[name='_csrf']").attr("content");
+				var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+
+				$.ajax({
+					url: '/register',
+					type: 'POST',
+					data:{
+						"name" : name,
+						"email" : email,
+						"username" : username,
+						"password" : password
+					},
+					beforeSend: function(request) {
+						request.setRequestHeader(csrfHeader, csrfToken); // 添加 CSRF
+						// Token
+					},
+					success: function(data){
+						if(data != null && data.id != null){
+							window.location.href = "login.html";
+						}else{
+							$("#errorMsg").html(" register has failed ");
+						}
+					}
+				});
+			};
 		}
 	}); 
 });
